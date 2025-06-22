@@ -1,71 +1,49 @@
-# KiCad Library Automator
+# Zip2KiCad (KiCad Library Automator)
 
-**Automatically watches your Downloads folder for KiCad-symbol ZIPs**, then moves & unpacks them into a central library folder.
+Automatically watches your Downloads folder for KiCad symbol ZIPs from SnapEDA, UltraLibrarian, etc., then moves & unpacks them into your central library—no more manual copy-paste.
 
-> **Purpose:** I created this tool for SnapEDA and UltraLibrarian workflows—copying and pasting symbols every time is annoying and time-consuming.
+---
+
+**Why Zip2KiCad?**
+
+> "I made this tool for SnapEDA and UltraLibrarian because copying/pasting symbols every time is annoying and time-consuming!"
+---
+
+## ✨ Features
 
 * Waits for downloads to finish (configurable delay & stability check)
-* Verifies the `.zip` contains a `.kicad_sym` file
-* Creates a subfolder named after the part (zip stem)
+* Verifies the .zip contains a `.kicad_sym` file
+* Creates a subfolder named after the part
 * Moves, unzips, and cleans up the original archive
 * Logs all actions to `kicad_monitor.log`
 
 ---
 
-## Repo layout
+## Installation & Usage
 
-```
-kicad-library-automator/
-├── .gitignore
-├── README.md
-├── config.json          ← your settings
-├── process_kicad_libs.py ← main watcher script
-├── requirements.txt     ← dependencies
-└── LICENSE
-```
+### **Option 1: Standalone EXE**
 
----
+You can use the ready-to-run `Zip2KiCad.exe`. No Python needed.
 
-## Installation
+* Place `Zip2KiCad.exe` and `config.json` in the same folder.
+* Double-click to start. It will run silently (no window).
+* All logs will appear in `kicad_monitor.log` in that folder.
 
-1. Clone the repo
+**To change settings** (e.g. folder locations or timing), edit `config.json` in a text editor (like Notepad).
 
-   ```bash
-   git clone https://github.com/<YOUR_USERNAME>/kicad-library-automator.git
-   cd kicad-library-automator
-   ```
+### **Option 2: Python Source (for editing or development)**
 
-2. (Optional) Create & activate a venv
+If you want to customize the script:
+
+1. Install Python 3.8+
+
+2. Edit `config.json` as needed.
+
+3. Run the watcher:
 
    ```bash
-   python -m venv venv
-   .\venv\Scripts\activate   # Windows
-   source venv/bin/activate   # macOS/Linux
+   python Zip2KiCad.py
    ```
-
-3. Install dependencies
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Edit `config.json` to match your paths and timing preferences.
-
----
-
-## Usage
-
-* **As a script**
-
-  ```bash
-  python process_kicad_libs.py
-  ```
-
-* **Bundled as an EXE** (no console window)
-
-  ```bash
-  pyinstaller --onefile --noconsole --add-data "config.json;." process_kicad_libs.py
-  ```
 
 ---
 
@@ -85,12 +63,21 @@ kicad-library-automator/
 }
 ```
 
-* `check_interval` & `max_wait`: polling for file‐size stability
-* `processing_delay`: seconds to wait before checking a new `.zip`
-* `downloads_dir` & `library_root`: where to watch & where to move/unzip
+* `downloads_dir` and `library_root`: folders to watch and manage
+* `processing_delay`: seconds to wait after new ZIP appears
+* `check_interval`/`max_wait`: how long to check if file download is done
 
 ---
 
-## License
+## How to run automatically on startup (Windows Task Scheduler)
 
-This project is released under the MIT License. See [LICENSE](LICENSE) for details.
+1. **Open Task Scheduler** (`Win+R`, type `taskschd.msc`, press Enter)
+2. **Create Task** > Give it a name like "Zip2KiCad Watcher"
+3. In **Actions** tab, choose "Start a program"
+
+   * **Program/script:** Browse to your EXE (e.g. `Zip2KiCad.exe`)
+   * **Start in (optional):** Folder where EXE and `config.json` are stored
+4. In **Triggers**, set to "At log on" (or as you prefer)
+5. In **General**, check "Run with highest privileges" (recommended)
+6. Click OK. Now the watcher will launch on login and run in the background.
+

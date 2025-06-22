@@ -1,0 +1,11 @@
+{
+  "downloads_dir": "C:/Users/angel/Downloads",
+  "library_root": "D:/MY FILES/PROJECTS/Angelo/my_kicad_lib",
+  "check_interval": 1.0,
+  "max_wait": 30,
+  "processing_delay": 10,
+  "file_extensions": {
+    "archive": ".zip",
+    "symbol": ".kicad_sym"
+  }
+}
